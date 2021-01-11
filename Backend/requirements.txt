@@ -1,0 +1,11 @@
+Django>=1.8,<2.0
+djangorestframework
+django-crispy-forms
+django-filter
+cors
+django-request
+django-guardian
+Markdown
+Pigments
+coreapi
+psycopg2
