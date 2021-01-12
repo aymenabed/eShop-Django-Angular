@@ -1,25 +1,33 @@
-<div class="container"  id="contentToConvert" #reportContent  class="content">
+<div class="container" id="contentToConvert" #reportContent class="content">
   <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-body p-0">
-          <div class="row  ">
+          <div class="row">
             <div class="col-12">
-              <div class="float-right pt-3 pr-3 content"  >
-                <button  mat-raised-button  color="primary"  (click)="captureScreen()">Telecharger</button>
-              </div>         </div></div>
-          <hr >
+              <div class="float-right pt-3 pr-3 content">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="captureScreen()"
+                >
+                  Télécharger
+                </button>
+              </div>
+            </div>
+          </div>
+          <hr />
 
-          <div   class="row pb-5 p-5">
+          <div class="row pb-5 p-5">
             <div class="col-md-6">
-              <p class="font-weight-bold mb-4"> </p>
+              <p class="font-weight-bold mb-4"></p>
               <p class="mb-1"></p>
               <p class="mb-1"></p>
               <p class="mb-1"></p>
             </div>
 
             <div class="col-md-6 text-right">
-              <img width="50px"  height="50px" src="assets/receipt.svg">
+              <img width="50px" height="50px" src="assets/receipt.svg" />
             </div>
           </div>
 
@@ -27,41 +35,47 @@
             <div class="col-md-12">
               <table class="table">
                 <thead>
-                <tr>
-                  <th class="border-0 text-uppercase small font-weight-bold">ID</th>
-                  <th class="border-0 text-uppercase small font-weight-bold">Produit</th>
-                  <th class="border-0 text-uppercase small font-weight-bold">Quantite</th>
-                  <th class="border-0 text-uppercase small font-weight-bold">Prix Unitaire</th>
-                  <th class="border-0 text-uppercase small font-weight-bold">Total</th>
-                </tr>
+                  <tr>
+                    <th class="border-0 text-uppercase small font-weight-bold">
+                      ID
+                    </th>
+                    <th class="border-0 text-uppercase small font-weight-bold">
+                      Produit
+                    </th>
+                    <th class="border-0 text-uppercase small font-weight-bold">
+                      Quantité
+                    </th>
+                    <th class="border-0 text-uppercase small font-weight-bold">
+                      Prix Unitaire
+                    </th>
+                    <th class="border-0 text-uppercase small font-weight-bold">
+                      Total
+                    </th>
+                  </tr>
                 </thead>
-                <tbody>
-
-                </tbody>
+                <tbody></tbody>
                 <tr *ngFor="let item of this.caddie">
-                  <td>{{item.id}}</td>
-                  <td>{{item.name}}</td>
-                  <td>{{item.qteDemander}}</td>
-                  <td>{{item.prix}}(€)</td>
-                  <td>{{item.prix *item.qteDemander }}(€)</td>
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.qteDemander }}</td>
+                  <td>{{ item.prix }}(€)</td>
+                  <td>{{ item.prix * item.qteDemander }}(€)</td>
                 </tr>
 
-<tr>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td></td>
-<td colspan="1"  class="font-weight-bold">{{this.prixTotal}} (€)</td>
-</tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td colspan="1" class="font-weight-bold">
+                    {{ this.prixTotal }} (€)
+                  </td>
+                </tr>
               </table>
             </div>
           </div>
-
-
         </div>
       </div>
     </div>
   </div>
-
-
 </div>

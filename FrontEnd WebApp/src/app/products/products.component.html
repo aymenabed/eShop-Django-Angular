@@ -1,58 +1,65 @@
 <div class="row m-4">
-  <div class="col-md-12 m-2 ">
-
-
-  <mat-form-field  class="example-full-width">
-    <mat-label>Recherche par nom du produit</mat-label>
-    <input (keyup)="onChange($event)" matInput placeholder="Nom produit" >
-  </mat-form-field>
+  <div class="col-md-12 m-2">
+    <mat-form-field class="example-full-width">
+      <mat-label>Recherche par nom du produit</mat-label>
+      <input (keyup)="onChange($event)" matInput placeholder="Nom produit" />
+    </mat-form-field>
   </div>
 </div>
-<hr/>
-  <div class="row">
+<hr />
+<div class="row">
+  <div
+    class="col-md-3 col-10 col-sm-3 col-xs-3 m-2"
+    *ngFor="let item of this.filteredItems"
+  >
+    <mat-card [formGroup]="productForm">
+      <img mat-card-image src="{{ item.photo }}" alt="Photo of a Shiba Inu" />
 
-
-    <div class="col-md-3 col-10  col-sm-3 col-xs-3 m-2" *ngFor="let item of this.filteredItems">
-
-      <mat-card  [formGroup]="productForm" >
-        <img  mat-card-image src='{{item.photo}}' alt="Photo of a Shiba Inu">
-
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title class="font-header">
-            <div class="text-center">
-              {{item.name}}
-            </div>
-          </mat-card-title>
-        </mat-card-header>
-
-        <mat-card-content>
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title class="font-header">
           <div class="text-center">
-            <p><span class="font-title " >STOCK: {{item.qte}} </span><mat-icon color="primary" class="min-size">local_offer</mat-icon></p>
-            <p><span class="font-title "> PRIX:{{item.prix}}</span> <mat-icon color="primary" class="min-size">shopping_cart</mat-icon></p>
-            <p>  <mat-form-field class="example-full-width">
-              <mat-label>Quantité demander</mat-label>
-              <input matInput placeholder="Quantité demander" formControlName="qteDemander" value="1">
-            </mat-form-field></p>
-
-            <p>
-            </p>
+            {{ item.name }}
           </div>
-        </mat-card-content>
-        <mat-card-actions >
-          <div class="text-center">
-            <button  mat-raised-button (click)="commanderProduits(item)" color="primary">Commander</button>
-          </div>
-        </mat-card-actions>
-      </mat-card>
+        </mat-card-title>
+      </mat-card-header>
 
+      <mat-card-content>
+        <div class="text-center">
+          <p>
+            <span class="font-title">STOCK: {{ item.qte }} </span
+            ><mat-icon color="primary" class="min-size">local_offer</mat-icon>
+          </p>
+          <p>
+            <span class="font-title"> PRIX:{{ item.prix }}</span>
+            <mat-icon color="primary" class="min-size">shopping_cart</mat-icon>
+          </p>
+          <p>
+            <mat-form-field class="example-full-width">
+              <mat-label>Quantité demandée</mat-label>
+              <input
+                matInput
+                placeholder="Quantité demander"
+                formControlName="qteDemander"
+                value="1"
+              />
+            </mat-form-field>
+          </p>
 
-
-    </div>
-
-
-
+          <p></p>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="text-center">
+          <button
+            mat-raised-button
+            (click)="commanderProduits(item)"
+            color="primary"
+          >
+            Commander
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
   </div>
-
-
-
+</div>
