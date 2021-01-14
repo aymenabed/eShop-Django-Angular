@@ -1,7 +1,9 @@
 from rest_framework import serializers
+# importation des models
 from .models import Product, Caddie
 
 
+#Serialisation des models produit et caddie
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product

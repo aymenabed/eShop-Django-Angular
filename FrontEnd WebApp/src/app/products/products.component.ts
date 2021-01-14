@@ -15,6 +15,7 @@ export class ProductsComponent implements OnInit {
   private productForm: FormGroup;
   products: any;
   filteredItems: any = [];
+  // constructor declarer les choses à utiliser
   constructor(
     private fb: FormBuilder,
     private _snackBar: MatSnackBar,
@@ -27,14 +28,19 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // initialisation variable produit
     this.products = [];
+
+    // subscribe dans productService.getAllProduct()
     this.productService.getAllProduct().subscribe((res: any) => {
       this.products = res.products;
+
+      // copier res dans filteredItems
       this.assignCopy();
     });
   }
   openSnackBar() {
-    this._snackBar.open('produit ajouté dans le caddie avec succès');
+    this._snackBar.open('produit ajouter dans le caddie avec success');
   }
 
   commanderProduits(prod) {
@@ -49,11 +55,11 @@ export class ProductsComponent implements OnInit {
       total: qtedemander * parseFloat(prod.prix),
       caddie: 1,
     };
-
     let indice = this.products.findIndex((item) => item.id === prod.id);
 
     product.qte = this.products[indice].qte - qtedemander;
     if (product.qte < 0) {
+      // afficher alert si Quantité demander non disponible
       Swal.fire({
         title: 'Echéc !',
         text: 'Quantité non disponible',
@@ -65,7 +71,6 @@ export class ProductsComponent implements OnInit {
         let qteReste = this.products[indice].qte - qtedemander;
         if (qteReste === 0) {
           this.products.splice(indice, 1);
-        } else if (qteReste < 0) {
         }
 
         this.products[indice].qte -= qtedemander;

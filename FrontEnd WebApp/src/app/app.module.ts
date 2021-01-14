@@ -30,7 +30,6 @@ import { FactureComponent } from './facture/facture.component';
     AppRoutingModule,
     MatBadgeModule,
     MatSnackBarModule,
-
     BrowserAnimationsModule,
     MatMenuModule,
     MatCardModule,

@@ -24,11 +24,13 @@ SECRET_KEY = '93+#((=#ykwf5sm)bgc9bv$59di*&kh-ttu=zb!t$noch=r=(5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
 ALLOWED_HOSTS = ["*"]
-CORS_ORIGIN_ALLOW_ALL = True  # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
+#les dépendances installées
 INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
+# les URLs des APIs de l'application
 ROOT_URLCONF = 'myapi.urls'
 
 TEMPLATES = [

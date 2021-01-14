@@ -7,15 +7,18 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework.parsers import JSONParser
 
+# importation des serialisations ProductSerializer et CaddieSerializer
 from .serializers import ProductSerializer, CaddieSerializer
+# importation des models produit et Caddie
 from .models import Product, Caddie
 from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 
 
+# Api Get Liste produite associer au caddie
 @api_view(["GET"])
+# fonction get produit du caddie (params :  requet et id caddie)
 def get_products(request, caddie_id):
-    user = request.user.id
     products = Product.objects.filter(caddie_id=caddie_id)
     serializer = ProductSerializer(products, many=True)
     return JsonResponse({'products': serializer.data},
@@ -23,9 +26,9 @@ def get_products(request, caddie_id):
                         status=status.HTTP_200_OK)
 
 
+# Api Get Liste All produits
 @api_view(["GET"])
 def get_Allproducts(request):
-    user = request.user.id
     products = Product.objects.filter()
     serializer = ProductSerializer(products, many=True)
     return JsonResponse({'products': serializer.data},
@@ -33,20 +36,13 @@ def get_Allproducts(request):
                         status=status.HTTP_200_OK)
 
 
-def get_caddie(request):
-    user = request.user.id
-    caddie = Caddie.objects.filter()
-    serializer = CaddieSerializer(caddie, many=True)
-    return JsonResponse({'caddie': serializer.data},
-                        safe=False,
-                        status=status.HTTP_200_OK)
-
-
+# Api associer produit au caddie
 @api_view(["POST"])
 def add_product(request, product_id):
+    # data revient du front
     payload = json.loads(request.body)
-
     product = Product.objects.filter(id=product_id)
+    # update produit
     product.update(**payload)
     productitem = Product.objects.get(id=product_id)
     serializer = ProductSerializer(productitem)
@@ -55,6 +51,7 @@ def add_product(request, product_id):
                         status=status.HTTP_200_OK)
 
 
+# Api add caddie
 @api_view(["POST"])
 def add_caddie(request):
     if request.method == 'POST':

@@ -10,8 +10,9 @@ import html2canvas from 'html2canvas';
 })
 export class FactureComponent implements OnInit {
   caddie: any;
-  private sum: any;
   prixTotal: any;
+
+  // reference div id = reportContent
   @ViewChild('reportContent') reportContent: ElementRef;
 
   constructor(private serviceProduit: ProductService) {}
@@ -19,28 +20,10 @@ export class FactureComponent implements OnInit {
   ngOnInit(): void {
     this.serviceProduit.getCaddieProduct('1').subscribe((res: any) => {
       this.caddie = res.products;
-      this.prixTotal = this.caddie.reduce((a, b) => {
-        return b.qteDemander * b.prix + a.qteDemander * a.prix;
+      this.prixTotal = 0;
+      this.caddie.map((res: any) => {
+        this.prixTotal += res.qteDemander * res.prix;
       });
-    });
-  }
-
-  s() {}
-
-  public makePdf() {
-    this.generatePDF();
-  }
-
-  generatePDF() {
-    var data = document.getElementById('reportContent');
-    html2canvas(data).then((canvas) => {
-      var imgWidth = 208;
-      var imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const contentDataURL = canvas.toDataURL('image/png');
-      let pdf = new jsPDF('p', 'mm', 'a4');
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      pdf.save('newPDF.pdf');
     });
   }
 
@@ -48,9 +31,7 @@ export class FactureComponent implements OnInit {
     const data = this.reportContent.nativeElement;
     html2canvas(data).then((canvas) => {
       const imgWidth = 208;
-      const pageHeight = 295;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const heightLeft = imgHeight;
       const contentDataURL = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const position = 0;

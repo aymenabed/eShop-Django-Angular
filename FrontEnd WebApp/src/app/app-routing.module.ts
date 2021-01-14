@@ -8,11 +8,14 @@ const routes: Routes = [
     path: '',
     component: HeaderComponent,
     children: [
+      //path par defaut si "" render List product
       {
         path: '',
         loadChildren: () =>
           import('./products/products.module').then((m) => m.ProductsModule),
       },
+
+      // "/facture " path vers page facture pour imprimer ticket
       {
         path: 'facture',
         component: FactureComponent,

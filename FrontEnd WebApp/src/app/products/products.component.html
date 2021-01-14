@@ -9,20 +9,17 @@
 <hr />
 <div class="row">
   <div
-    class="col-md-3 col-10 col-sm-3 col-xs-3 m-2"
+    class="col-md-2 col-10 col-sm-3 col-xs-3 m-2"
     *ngFor="let item of this.filteredItems"
   >
     <mat-card [formGroup]="productForm">
       <img mat-card-image src="{{ item.photo }}" alt="Photo of a Shiba Inu" />
 
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title class="font-header">
-          <div class="text-center">
-            {{ item.name }}
-          </div>
+      <div>
+        <mat-card-title class="font-header text-center">
+          {{ item.name }}
         </mat-card-title>
-      </mat-card-header>
+      </div>
 
       <mat-card-content>
         <div class="text-center">
@@ -61,5 +58,10 @@
         </div>
       </mat-card-actions>
     </mat-card>
+  </div>
+</div>
+<div *ngIf="this.filteredItems.length === 0">
+  <div class="text-center">
+    <img class="img-fluid" style="height: 200px" src="assets/images.png" />
   </div>
 </div>

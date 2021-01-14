@@ -8,8 +8,8 @@ import { ProductService } from '../services/product.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  products: any = [];
-  groupProduct: any = [];
+  // Liste des produits afficher dans header caddie
+  groupProduct = [];
 
   constructor(
     private sharedService: MessageService,
