@@ -9,3 +9,327 @@ Markdown
 Pigments
 coreapi
 psycopg2
+
+
+To Get Django version
+py
+import django
+django.get_version() => '3.1.5'
+
+To Get Python version
+python --version
+Python 3.9.1
+
+Liste de tâches pour créer une API REST dans Django
+les étapes pour créer une API REST?
+1.	Configurer Django
+2.	Créer un modèle dans la base de données que Django ORM gérera
+3.	Configurer le Framework Django REST
+4.	Sérialiser le modèle à partir de l'étape 2
+5.	Créez les points de terminaison URI pour afficher les données sérialisées
+  
+/***************/
+1. Alors Pour Configurer Django il faut :
+
+1.2 Installer Django
+
+nous pouvons installer Django à l'aide du commande suivante :
+$ pip install django
+
+Ensuite, commençons un nouveau projet Django à l'aide du commande:
+$ django-admin startproject mysite
+
+
+1.3 Ensuite Créer une application API REST
+
+créons une nouvelle application pour notre API:
+$ python manage.py startapp myapi
+
+
+1.4 Enregistrer l'application myapi avec le projet mysite
+
+Nous devons dire à Django de reconnaître cette nouvelle application que nous venons de créer. 
+Les étapes que nous suivrons plus tard ne fonctionneront pas si Django ne connaît pas myapi.
+
+Donc, nous éditons mysite/settings.py:
+
+INSTALLED_APPS = [
+'myapi.apps.MyapiConfig',
+... # Leave all the other INSTALLED_APPS
+]
+
+2. Créez un modèle dans la base de données que Django ORM gérera
+
+Nous allons le construire dans le fichier myapi/models.py, alors ouvrez ce fichier.
+
+2.1 myapi / models.py
+
+# models.py
+from django.db import models
+
+class Produit (models.Model):
+    name = models.CharField(max_length=60)
+    alias = models.CharField(max_length=60)    
+    
+    def __str__(self):
+        return self.name
+
+name et alias sont des champs de caractères où nous pouvons stocker des chaînes. 
+La __str__méthode indique simplement à Django ce qu'il doit imprimer lorsqu'il a besoin d'imprimer une instance du Produit modèle.
+
+2.2 Effectuer des migrations
+
+N'oubliez pas que chaque fois que nous définissons ou modifions un modèle, nous devons dire à Django de migrer ces modifications.
+$ python manage.py makemigrations
+$ python manage.py migrate
+
+
+1.5 Migrer la base de données
+
+Chaque fois que nous créons ou apportons des modifications à un modèle, 
+nous devons dire à Django de migrer ces modifications vers la base de données. 
+L'ORM Django écrit ensuite toutes les CREATE TABLE commandes SQL pour nous.
+
+$ python manage.py migrate
+
+1.6 Créer un super Utilisateur
+
+$ python manage.py createsuperuserUsername : 
+Email address: aymenabed99@gmail.com
+Password:  123456
+Password (again): 123456
+Superuser created successfully.
+
+2.3 Enregistrer les models sur le site d'administration
+
+Il ne sait pas que le Produit modèle existe, mais avec deux lignes de code, nous pouvons en parler des Produits.
+Ouvrez myapi / admin.py et faites-le ressembler à ceci:
+from django.contrib import admin
+from .models import Produit
+admin.site.register(Produit)
+
+
+3. Configurer Django REST Framework
+
+D'accord, il est temps de commencer à penser à l'API de nos Produit. 
+Nous devons sérialiser les données de notre base de données via des points de terminaison.
+Pour ce faire, nous aurons besoin de Django REST Framework, donc installons-le.
+
+$ pip install djangorestframework
+
+Maintenant, dites à Django que nous avons installé le Framework REST dans mysite / settings.py:
+INSTALLED_APPS = [
+# All your installed apps stay the same
+...
+'rest_framework',
+]
+
+
+4. Sérialisez le modèle Produit
+
+N'oubliez pas que la sérialisation est le processus de conversion d'un fichier Model en JSON. 
+À l'aide d'un sérialiseur, nous pouvons spécifier quels champs doivent être présents dans la représentation JSON du modèle.
+
+Le sérialiseur transformera nos Produit en une représentation JSON afin que l'utilisateur de l'API puisse les analyser, 
+même s'ils n'utilisent pas Python. À son tour, lorsqu'un utilisateur POST des données JSON dans notre API, 
+le sérialiseur convertit ce JSON en modèle Produit pour que nous puissions les enregistrer ou les valider.
+
+Pour ce faire, créons un nouveau fichier - myapi / serializers.py
+Dans ce fichier, nous devons:
+1.	Importer le modèle Produit
+2.	Importer le sérialiseur de REST Framework
+3.	Créer une nouvelle classe qui relie le Produit à son sérialiseur
+
+Voici comment:
+
+# serializers.py
+
+from rest_framework import serializers
+
+from .models import Produit
+
+class ProduitSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Produit
+        fields = ('name', 'alias')
+
+
+5. Afficher les données
+
+Il ne reste plus qu'à câbler les URL et les vues pour afficher les données!
+
+5.1 Vues
+Commençons par la vue. Nous devons rendre les différents Produit au format JSON.
+Pour ce faire, nous devons:
+
+1.	Interrogez la base de données pour tous les Produit
+2.	Passez cet ensemble de requêtes de base de données dans le sérialiseur que nous venons de créer, 
+afin qu'il soit converti en JSON et rendu
+
+Dans myapi / views.py:
+# views.py
+
+from rest_framework import viewsets
+from .serializers import ProduitSerializer
+from .models import Produit
+
+
+class ProduitViewSet(viewsets.ModelViewSet):
+    queryset = Produit.objects.all().order_by('name')
+    serializer_class = ProduitSerializer
+
+ModelViewSetest une vue spéciale fournie par Django Rest Framework. 
+Il gérera GET et POST for Produits sans que nous ayons à faire plus de travail.
+
+
+5.2 URL du site
+
+La dernière étape consiste à pointer une URL sur l'ensemble de vues que nous venons de créer.
+
+Dans Django, les URL sont d'abord résolues au niveau du projet. 
+Il y a donc un fichier dans le mysite/répertoire appelé urls.py.
+Allez là-bas. Vous verrez que l'URL du site d'administration s'y trouve déjà. 
+Il ne nous reste plus qu'à ajouter une URL pour notre API. Pour l'instant, mettons simplement notre API à l'index:
+
+# mysite/urls.py
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('myapi.urls')),
+ ]
+
+
+ /*******************/
+ 5.3 URL d'API
+Si vous faites attention et pas seulement à copier-coller aveuglément, 
+vous remarquerez que nous avons inclus 'myapi.urls'. 
+C'est un chemin vers un fichier que nous n'avons pas encore édité. 
+Et c'est là que Django va chercher ensuite des instructions sur la façon d'acheminer cette URL.
+
+Alors, allons-y ensuite - myapi / urls.py:
+
+# myapi/urls.py
+
+from django.urls import include, path
+from rest_framework import routers
+from . import views
+
+router = routers.DefaultRouter()
+router.register(r'produits', views.ProduitsViewSet)
+
+# Wire up our API using automatic URL routing.
+# Additionally, we include login URLs for the browsable API.
+urlpatterns = [
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+]
+
+Notez que nous avons ajouté quelque chose appelé à router partir duquel nous avons importé rest_framework.
+Le routeur REST Framework s'assurera que nos requêtes aboutissent dynamiquement à la bonne ressource. 
+Si nous ajoutons ou supprimons des éléments de la base de données, les URL seront mises à jour pour correspondre. 
+A router fonctionne avec a viewset(voir views.pyci - dessus) pour acheminer dynamiquement les demandes. 
+Pour qu'un routeur fonctionne, il doit pointer vers un ensemble de vues, et dans la plupart des cas, 
+si vous avez un ensemble de vues, vous voudrez qu'un routeur l'accompagne.
+
+Jusqu'à présent, nous n'avons ajouté qu'un seul modèle + sérialiseur + ensemble de vues au routeur - Produis. 
+Mais nous pouvons en ajouter plus à l'avenir en répétant le même processus ci-dessus pour différents modèles! 
+(Peut-être créer une VillainsAPI ensuite?)
+Bien sûr, si vous ne souhaitez utiliser que des vues DRF standard au lieu de vues, cela urls.
+py sera un peu différent. Vous n'avez pas besoin d'un routeur pour utiliser des vues simples, 
+et vous pouvez simplement les ajouter avec:
+path('path/to/my/view/', MySimpleView.as_view())
+
+
+/***************************/
+
+Si vous faites le choix de travailler avec MySQL par exemple, pensez à vérifier la configuration dans le fichier settings.py
+
+mysite/settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'OPTIONS' : { "init_command": "SET foreign_key_checks = 0;" },
+        'NAME': 'eboutique',
+        'USER': 'root',
+        'PASSWORD': 'MOTDEPASSE',
+        'HOST': '127.0.0.1',                     
+        'PORT': '',
+    }
+}
+
+
+Un modèle est donc une simple classe python qui hérite de la classe models.Model
+Les champs sont définis dans la classe, on leur donne un nom et un type.
+Les champs des modèles sont définis dans le module suivant: django.db.models.fields
+
+Il est donc possible de voir tous les champs existants en exécutant la commande help(django.db.models.fields)
+
+AutoField              → incrémente automatiquement sa valeur
+BinaryField            → stocke des données binaires brutes en octets (bytes)
+BooleanField           → un champ True / False
+CharField              → un champ pour une chaine de caractères assez courte
+TextField              → pour du texte long
+CommaSeparatedIntegerField → entiers séparés par un virgule
+EmailField             → vérifie une valeur d'adresse valide
+SlugField              → format slug (alphanumérique + tirets)
+URLField               → format URL
+DateField              → une date, instance de datetime.date en python
+DateTimeField          → une date et une heure, instance python de datetime.datetime
+DecimalField           → un nombre décimal de taille fixe, instance python de Decimal
+FileField              → un champ de fichier à téléverser (paramètre upload_to est obligatoire)
+ImageField             → idem que FileField mais vérifie qu'il s'agit d'une image
+FilePathField          → un path de fichier (paramètre path est obligatoire)
+FloatField             → une instance de float en python
+GenericIPAddressField  → une adresse ip valide IPV4 / IPV6
+IPAddressField         → une adresse ip textuel type 192.168.0.1
+IntegerField           → valeurs comprises entre -2147483648 à 2147483647 
+BigIntegerField        → Un entier 64 bits
+PositiveIntegerField   → valeurs comprises entre 0 et 2147483647 
+PositiveSmallIntegerField → valeurs comprises entre 0 et 32767
+SmallIntegerField      → valeurs comprises entre -32768 et 32767 
+NullBooleanField       → un champ booléen qui accepte le Null
+TimeField              → format heure instance de datetime.time
+
+Il existe des champs qui lient les tables entre elles. Ces champs sont définis dans django.db.models
+
+ForeignKey       → relation plusieurs-à-un
+ManyToManyField  → relation plusieurs-à-plusieurs 
+OneToOneField    → relation un-à-un
+
+
+Paramètres pour les champs
+------------ paramètres communs -------------------------------
+
+db_column         → nom de la colonne dans la base de données
+db_index          → créer un index pour la colonne
+default           → la valeur par défaut du champ
+editable          → Si False le champ n'est pas éditable dans admin
+help_text         → texte d'aide affiché dans le formulaire
+primary_key       → si True devient la clé primaire
+unique            → si True impossible d'avoir des doublons de valeur
+verbose_name      → un nom plus explicite
+validators        → une liste de validateurs à exécuter
+
+------------ paramètres spécifiques ---------------------------
+
+primary_key       → renseigner la clé primaire
+blank             → autoriser la soumission d'un champ vide
+null              → autoriser d'enregistrer en base une valeur nulle 
+unique_for_date   → unique pour une date 
+unique_for_month  → unique pour un mois 
+unique_for_year   → unique pour un an 
+choices           → choix possibles 
+
+
+To Get Django version
+py
+import django
+django.get_version() => '3.1.5'
+
+To Get Python version
+python --version
+Python 3.9.1
+

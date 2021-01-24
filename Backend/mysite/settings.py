@@ -24,6 +24,7 @@ SECRET_KEY = '93+#((=#ykwf5sm)bgc9bv$59di*&kh-ttu=zb!t$noch=r=(5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#Config CORS_ORIGIN
 # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -33,14 +34,23 @@ CORS_ORIGIN_ALLOW_ALL = True
 #les dépendances installées
 INSTALLED_APPS = [
     'django.contrib.staticfiles',
-    'rest_framework',
     'corsheaders',
-    'myapi.apps.MyapiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
+    #Enregistrer l'application myapi avec le projet mysite
+    #Nous devons dire à Django de reconnaître l'application myapi.
+    #Les étapes que nous suivrons plus tard ne fonctionneront pas si Django ne connaît pas myapi.
+    'myapi.apps.MyapiConfig',
+
+    #$ pip install djangorestframework
+    #$ pip install markdown
+    #$ pip install django-filter
+    # dites à Django que nous avons installé le Framework REST
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

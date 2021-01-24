@@ -14,7 +14,11 @@ from .models import Product, Caddie
 from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 
+# ModelViewSetest une vue spéciale fournie par Django Rest Framework.
+# Il gérera GET et POST for Produits sans que nous ayons à faire plus de travail.
 
+
+#Nous devons rendre les différents Produit au format JSON.
 # Api Get Liste produite associer au caddie
 @api_view(["GET"])
 # fonction get produit du caddie (params :  requet et id caddie)

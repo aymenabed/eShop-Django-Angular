@@ -4,6 +4,7 @@ from django.utils import timezone
 import os
 
 # Create your models here.
+# Créez les modèles dans la base de données que Django ORM gérera
 
 
 # definition du Model caddie
@@ -31,3 +32,14 @@ class Product(models.Model):
     # Clé étrangère reference caddie
     caddie = models.ForeignKey(Caddie, on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
+
+
+# name, short_desc, photo, ...  sont des champs de caractères où nous pouvons stocker des chaînes.
+# La __str__ méthode indique simplement à Django ce qu'il doit imprimer lorsqu'il a besoin d'imprimer une instance du Caddie modèle.
+
+# Effectuer des migrations
+
+# Chaque fois que nous créons ou apportons des modifications à un modèle,
+# nous devons dire à Django de migrer ces modifications vers la base de données.
+# $ python manage.py makemigrations
+# $ python manage.py migrate

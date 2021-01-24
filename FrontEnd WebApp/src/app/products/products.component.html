@@ -1,5 +1,5 @@
 <div class="row m-4">
-  <div class="col-md-12 m-2">
+  <div class="col-md-12 text-center m-2">
     <mat-form-field class="example-full-width">
       <mat-label>Recherche par nom du produit</mat-label>
       <input (keyup)="onChange($event)" matInput placeholder="Nom produit" />
@@ -7,7 +7,7 @@
   </div>
 </div>
 <hr />
-<div class="row">
+<div class="row marg-body">
   <div
     class="col-md-2 col-10 col-sm-3 col-xs-3 m-2"
     *ngFor="let item of this.filteredItems"
@@ -28,7 +28,7 @@
             ><mat-icon color="primary" class="min-size">local_offer</mat-icon>
           </p>
           <p>
-            <span class="font-title"> PRIX:{{ item.prix }}</span>
+            <span class="font-title"> PRIX:{{ item.prix }} €</span>
             <mat-icon color="primary" class="min-size">shopping_cart</mat-icon>
           </p>
           <p>

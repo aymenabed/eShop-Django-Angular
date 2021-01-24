@@ -27,6 +27,7 @@ import { FactureComponent } from './facture/facture.component';
   ],
   imports: [
     BrowserModule,
+    /*import app-routing.module*/
     AppRoutingModule,
     MatBadgeModule,
     MatSnackBarModule,
@@ -41,6 +42,8 @@ import { FactureComponent } from './facture/facture.component';
     MatIconModule,
     MatButtonModule,
   ],
+  /*import ProductService */
+  
   providers: [ProductService],
   bootstrap: [AppComponent],
 })

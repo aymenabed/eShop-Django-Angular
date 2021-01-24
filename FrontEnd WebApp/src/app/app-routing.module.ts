@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: HeaderComponent,
     children: [
-      //path par defaut si "" render List product
+      // path par defaut si "" render List product
       {
         path: '',
         loadChildren: () =>

@@ -15,7 +15,7 @@ export class ProductsComponent implements OnInit {
   private productForm: FormGroup;
   products: any;
   filteredItems: any = [];
-  // constructor declarer les choses à utiliser
+  // constructor pour déclarer les choses à utiliser
   constructor(
     private fb: FormBuilder,
     private _snackBar: MatSnackBar,
@@ -40,7 +40,7 @@ export class ProductsComponent implements OnInit {
     });
   }
   openSnackBar() {
-    this._snackBar.open('produit ajouter dans le caddie avec success');
+    this._snackBar.open('produit ajouté dans le caddie avec succès');
   }
 
   commanderProduits(prod) {

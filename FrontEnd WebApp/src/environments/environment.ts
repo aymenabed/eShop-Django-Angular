@@ -3,9 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 // config URL des APIs "BackEnd"
+
+// export const environment = {
+//   production: false,
+//   urlBackend: 'http://13.66.0.132:8081',
+// };
+
 export const environment = {
   production: false,
-  urlBackend: 'http://13.66.0.132:8081',
+  urlBackend: 'http://127.0.0.1:8000',
 };
 
 /*
